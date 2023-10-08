@@ -6,6 +6,8 @@ import androidx.work.NetworkType;
 import androidx.work.OneTimeWorkRequest;
 import androidx.work.WorkManager;
 
+import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
@@ -16,6 +18,7 @@ import android.widget.Toast;
 import android.widget.ToggleButton;
 
 import com.example.alwaysrunninginbackground.MyReceivers.AlarmScheduler;
+import com.example.alwaysrunninginbackground.ServicesFolder.ForeGroundService;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -44,6 +47,16 @@ public class MainActivity extends AppCompatActivity {
                 ).setConstraints(constraints)
                         .build();
                 WorkManager.getInstance(getApplicationContext()).enqueue(onceWorkRequest);
+            }
+        });
+
+        foreGround.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getApplicationContext(), ForeGroundService.class);
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                    startForegroundService(intent);
+                }
             }
         });
 

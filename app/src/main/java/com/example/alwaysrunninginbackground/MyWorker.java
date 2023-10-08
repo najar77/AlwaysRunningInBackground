@@ -30,11 +30,6 @@ public class MyWorker extends Worker {
                         .show();
             }
         });
-
-
-
-
-
         return Result.success();
     }
 }
