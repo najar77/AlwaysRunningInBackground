@@ -4,26 +4,23 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.work.Constraints;
 import androidx.work.NetworkType;
 import androidx.work.OneTimeWorkRequest;
-import androidx.work.PeriodicWorkRequest;
 import androidx.work.WorkManager;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.Toast;
 import android.widget.ToggleButton;
 
 import com.example.alwaysrunninginbackground.MyReceivers.AlarmScheduler;
-import com.example.alwaysrunninginbackground.ServicesFolder.ToastService;
-
-import java.util.concurrent.TimeUnit;
 
 public class MainActivity extends AppCompatActivity {
 
-    Button btn,workBtn;
+    Button btn, workBtnOnce,foreGround,workBtnPeriodic;
+    EditText onceText, periodicText;
     ToggleButton tb;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -31,19 +28,22 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         btn = findViewById(R.id.btn);
         tb = findViewById(R.id.toggle);
-        workBtn = findViewById(R.id.btn2);
+        workBtnOnce = findViewById(R.id.worker_once);
+        workBtnPeriodic = findViewById(R.id.worker_periodic);
+        foreGround = findViewById(R.id.foreground);
+        onceText = findViewById(R.id.once_time);
+        periodicText = findViewById(R.id.periodic_time);
 
-        workBtn.setOnClickListener(new View.OnClickListener() {
+        workBtnOnce.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Constraints constraints = new Constraints.Builder()
                         .setRequiredNetworkType(NetworkType.CONNECTED).build();
-                OneTimeWorkRequest periodicWorkRequest =new OneTimeWorkRequest.Builder(
+                OneTimeWorkRequest onceWorkRequest =new OneTimeWorkRequest.Builder(
                         MyWorker.class
                 ).setConstraints(constraints)
                         .build();
-
-                WorkManager.getInstance(getApplicationContext()).enqueue(periodicWorkRequest);
+                WorkManager.getInstance(getApplicationContext()).enqueue(onceWorkRequest);
             }
         });
 
